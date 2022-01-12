@@ -10,3 +10,5 @@ pre_order_iterable:
 	python iterators/basic_iterators.py pre_order_iterable
 in_order_iterable:
 	python iterators/basic_iterators.py in_order_iterable
+filtering_iterator:
+	python iterators/filter_iterators.py
