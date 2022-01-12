@@ -12,7 +12,7 @@ Iterator, and Iterable protocols are defined.
 The image also demonstrates, that all Iterators also conforms to the Iterable protocol. 
 This is the reason, we can use and Iterator as Iterable with for  loops.
 
-In the [basic_iterators](https://github.com/sarkarchandan/pycollections/blob/master/iterators/basic_iterators.py)  
+In the [basic_iterators](https://github.com/sarkarchandan/pycollections/blob/master/iterators/basic_iterators.py) 
 module we have demonstrated some basic implementations of the iterators. We have 
 implemented some iterators, which performs basic level-order, inorder, and preorder 
 tree traversal, when the tree is represented as a sequence. 
