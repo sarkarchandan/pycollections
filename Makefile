@@ -1,14 +1,17 @@
 iter_for:
-	python iterators/basic_iterators.py iter_for
+	python iter/basic_iterators.py iter_for
 call_next:
-	python iterators/basic_iterators.py call_next
+	python iter/basic_iterators.py call_next
 level_order:
-	python iterators/basic_iterators.py level_order
+	python iter/basic_iterators.py level_order
 level_order_iterable:
-	python iterators/basic_iterators.py level_order_iterable
+	python iter/basic_iterators.py level_order_iterable
 pre_order_iterable:
-	python iterators/basic_iterators.py pre_order_iterable
+	python iter/basic_iterators.py pre_order_iterable
 in_order_iterable:
-	python iterators/basic_iterators.py in_order_iterable
+	python iter/basic_iterators.py in_order_iterable
 filtering_iterator:
-	python iterators/filter_iterators.py
+	python iter/filter_iterators.py
+transform_iterator:
+	python iter/transform_iterators.py
+
