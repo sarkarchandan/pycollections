@@ -14,4 +14,7 @@ filtering_iterator:
 	python iter/filter_iterators.py
 transform_iterator:
 	python iter/transform_iterators.py
-
+iterable_as_is:
+	python iter/iterable.py iterable_as_is
+iterator_from_iterable:
+	python iter/iterable.py iterator_from_iterable

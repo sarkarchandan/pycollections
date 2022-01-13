@@ -12,7 +12,7 @@ Iterator, and Iterable protocols are defined.
 The image also demonstrates, that all Iterators also conforms to the Iterable protocol. 
 This is the reason, we can use and Iterator as Iterable with for  loops.
 
-In the [basic_iterators](https://github.com/sarkarchandan/pycollections/blob/master/iterators/basic_iterators.py) 
+In the [basic_iterators](https://github.com/sarkarchandan/pycollections/blob/master/iter/basic_iterators.py) 
 module we have demonstrated some basic implementations of the iterators. We have 
 implemented some iterators, which performs basic level-order, inorder, and preorder 
 tree traversal, when the tree is represented as a sequence. 
@@ -31,9 +31,19 @@ iterators e.g., filtering iterators, transformer iterators etc.
 > `object` instances having no value, and creating a custom iterator to skip these 
 > special objects.
 
-In the [filter_iterators](https://github.com/sarkarchandan/pycollections/blob/master/iterators/filter_iterators.py) 
+In the [filter_iterators](https://github.com/sarkarchandan/pycollections/blob/master/iter/filter_iterators.py) 
 module, we have created `SkipMissingIterator` class, which takes an `Iterable` 
 object, and filters the placeholder missing objects. We have demonstrated how 
 we have reused the `InOrderIterator`, which needs the perfect binary tree in 
 order to create an infix notation, and then filtered out the missing objects.
+
+In the [transform_iterators](https://github.com/sarkarchandan/pycollections/blob/master/iter/transform_iterators.py) 
+we have created `TranslationIterator` class, which takes a machine-readable 
+expression as Iterable, and translates the same to humanreadable expression.
+
+In the [iterable](https://github.com/sarkarchandan/pycollections/blob/master/iter/iterable.py) 
+module, we have demonstrated a simple custom class `PerfectBinaryTree`, which 
+implements the Iterable protocol. We observed, that it can be used anywhere, 
+where an Iterable type is expected.
+
 
