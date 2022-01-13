@@ -18,3 +18,5 @@ iterable_as_is:
 	python iter/iterable.py iterable_as_is
 iterator_from_iterable:
 	python iter/iterable.py iterator_from_iterable
+alternative_iterable:
+	python iter/alternative_iterable.py

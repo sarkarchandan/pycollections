@@ -46,4 +46,11 @@ module, we have demonstrated a simple custom class `PerfectBinaryTree`, which
 implements the Iterable protocol. We observed, that it can be used anywhere, 
 where an Iterable type is expected.
 
+In the [alternative_iterable](https://github.com/sarkarchandan/pycollections/blob/master/iter/alternative_iterable.py) 
+module we have demonstrated an alternative method to create Iterable collection 
+using the `__getitem__` dunder method. Here we have created an Iterable sequence 
+of rational numbers using `Fraction` objects. We have only provided the 
+implementation of the `__getitem__` in order to effectively create an Iterable. 
+This Iterable can be passed in to `iter` function to create an Iterator.
+
 
