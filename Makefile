@@ -26,3 +26,5 @@ generate_indefinite_timestamps:
 	python iter/extended_iter.py generate_indefinite_timestamps
 test_sorted_frozen:
 	python coll/test_frozen_set.py
+lint:
+	pylint coll iter

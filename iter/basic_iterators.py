@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring
+
 from typing import List, Iterator, Any, Sequence
 from argparse import ArgumentParser, Namespace
 
@@ -51,11 +53,9 @@ class LevelOrderIterator:
         self._idx = 0
 
     def __next__(self) -> Any:
-        res: Any
         if self._idx >= len(self._seq):
             raise StopIteration
-        else:
-            res = self._seq[self._idx]
+        res: Any = self._seq[self._idx]
         self._idx += 1
         return res
 
@@ -125,14 +125,14 @@ class InOrderIterator:
         return self
 
     def __next__(self) -> Any:
-        # Exit condition - Now we have a more complex exit condition. We keep 
-        # track of the currently running index as well as the stack, and we 
-        # exit, iff stack is empty and the index is out of bound of the 
+        # Exit condition - Now we have a more complex exit condition. We keep
+        # track of the currently running index as well as the stack, and we
+        # exit, iff stack is empty and the index is out of bound of the
         # sequence.
         if len(self._stack) == 0 and self._idx >= len(self._seq):
             raise StopIteration
-        # We iteratively look for the left child in each subtree from our 
-        # sequence, using the _idx attribute, and we'd stop only when the 
+        # We iteratively look for the left child in each subtree from our
+        # sequence, using the _idx attribute, and we'd stop only when the
         # _idx goes out of bound of the sequence. This iteration would
         # stop, when we reach the left most leaf node of a subtree.
         while self._idx < len(self._seq):

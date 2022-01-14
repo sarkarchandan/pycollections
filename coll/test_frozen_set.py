@@ -1,3 +1,6 @@
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-function-docstring
+
 import unittest
 from unittest import TestCase
 from typing import List, Iterator
@@ -8,13 +11,13 @@ class SortedFrozenSetTestCase(TestCase):
 
     def test_construct_empty(self) -> None:
         try:
-            sfs: SortedFrozenSet = SortedFrozenSet(seq=[])
+            _ = SortedFrozenSet(seq=[])
         except TypeError:
             self.fail('Failed to construct SortedFrozenSet with empty list')
 
     def test_construct_from_list(self) -> None:
         try:
-            sfs: SortedFrozenSet = SortedFrozenSet(seq=[4, 1, 6, 3, 10])
+            _ = SortedFrozenSet(seq=[4, 1, 6, 3, 10])
         except TypeError:
             self.fail('Failed to construct SortedFrozenSet with nonempty list')
 
@@ -22,13 +25,13 @@ class SortedFrozenSetTestCase(TestCase):
         iter_list: List[int] = [4, 1, 6, 3, 10]
         iterator: Iterator = iter(iter_list)
         try:
-            sfs: SortedFrozenSet = SortedFrozenSet(seq=iterator)
+            _ = SortedFrozenSet(seq=iterator)
         except TypeError:
             self.fail('Failed to construct SortedFrozenSet with iterator')
 
     def test_construct_no_args(self) -> None:
         try:
-            sfs: SortedFrozenSet = SortedFrozenSet()
+            _ = SortedFrozenSet()
         except TypeError:
             self.fail('Failed to construct SortedFrozenSet without arguments')
 

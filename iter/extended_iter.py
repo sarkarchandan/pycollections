@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring
+
 from typing import Iterator, List
 from argparse import ArgumentParser, Namespace
 from pathlib import Path

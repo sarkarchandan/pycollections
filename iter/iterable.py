@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring
+
 from typing import Iterable, Iterator, Tuple, Any, List
 from basic_iterators import InOrderIterator, _is_perfect_length
 from filter_iterators import SkipMissingIterator
