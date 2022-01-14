@@ -102,4 +102,7 @@ utilities, which these protocols support.
 * `Mutable Sequence, Set, and Mapping` protocols are representatives of the 
   mutable versions of the corresponding protocols.
 
-
+In the [coll/collection](https://github.com/sarkarchandan/pycollections/blob/master/coll/collection.py) 
+module we have implemented a `SortedFrozenSet` type, which implements `Sized`, 
+`Iterable`, `Sequence`, `Container`, and `Set` protocols. We have implemented 
+the SortedFrozenSet with the Test Driven Development approach.

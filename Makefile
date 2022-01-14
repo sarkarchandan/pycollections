@@ -24,3 +24,5 @@ generate_sequence_from_file:
 	python iter/extended_iter.py generate_sequence_from_file
 generate_indefinite_timestamps:
 	python iter/extended_iter.py generate_indefinite_timestamps
+test_sorted_frozen:
+	python coll/test_frozen_set.py
