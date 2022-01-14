@@ -20,3 +20,7 @@ iterator_from_iterable:
 	python iter/iterable.py iterator_from_iterable
 alternative_iterable:
 	python iter/alternative_iterable.py
+generate_sequence_from_file:
+	python iter/extended_iter.py generate_sequence_from_file
+generate_indefinite_timestamps:
+	python iter/extended_iter.py generate_indefinite_timestamps
