@@ -102,7 +102,7 @@ utilities, which these protocols support.
 * `Mutable Sequence, Set, and Mapping` protocols are representatives of the 
   mutable versions of the corresponding protocols.
 
-In the [coll/collection](https://github.com/sarkarchandan/pycollections/blob/master/coll/frozen_set.py) 
+In the [frozen_set](https://github.com/sarkarchandan/pycollections/blob/master/coll/frozen_set.py) 
 module we have implemented a `SortedFrozenSet` type, which implements `Sized`, 
 `Iterable`, `Sequence`, `Container`, and `Set` protocols. We have implemented 
 the SortedFrozenSet with the Test Driven Development approach. Following are 
@@ -117,7 +117,7 @@ not found, it falls back to the Iterable protocol.
 
 ### Sized
 
-Sized protocol enabled the use of `len` builtin function on a collection to 
+Sized protocol enables the use of `len` builtin function on a collection to 
 check the number of items, that it contains. It should not consume or modify 
 the collection in any ways. One must implement the `__len__` dunder method in 
 order to implement the Sized protocol. In this implementation, we have done 
@@ -125,6 +125,18 @@ a crucial refactoring in the initializer of the SortedFrozenSet to use `set`
 as an internal collection. This is done in order to preserve a crucial property, 
 that set is a collection of distinct items, and SortedFrozenSet must conform to 
 it.
+
+### Iterable
+
+Iterable protocol dictates, that a compliant object can be passed to builtin 
+`iter` function in order to create an Iterator. This needs the implementation 
+of the `__iter__` method. There is an alternative way to create an Iterable, 
+which is to implement `__getitem__` method. This method takes an integer index 
+as argument, and should raise IndexError, once the index goes beyond the length 
+of the collection. In this part of the implementation we have taken the first 
+approach, where we called the iter function on the internal collection. However, 
+we also acknowledge, that using `__iter__` as a Generator function is also 
+equally valid. Generator functions also produce Iterator objects.
 
 
 

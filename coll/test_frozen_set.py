@@ -81,5 +81,29 @@ class SizedTestCase(TestCase):
         self.assertEqual(len(fs), 3)
 
 
+class IterableTestCase(TestCase):
+
+    _set: SortedFrozenSet
+
+    def setUp(self) -> None:
+        self._set = SortedFrozenSet(items=[7, 2, 1, 1, 9])
+
+    def test_iter(self) -> None:
+        sit: Iterator = iter(self._set)
+        self.assertEqual(next(sit), 1)
+        self.assertEqual(next(sit), 2)
+        self.assertEqual(next(sit), 7)
+        self.assertEqual(next(sit), 9)
+        with self.assertRaises(StopIteration):
+            next(sit)
+
+    def test_for_loop(self) -> None:
+        exp: List[int] = [1, 2, 7, 9]
+        idx: int = 0
+        for item in self._set:
+            self.assertEqual(item, exp[idx])
+            idx += 1
+
+
 if __name__ == '__main__':
     unittest.main()
