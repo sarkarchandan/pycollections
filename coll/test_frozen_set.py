@@ -56,5 +56,30 @@ class ContainerTestCase(TestCase):
         self.assertFalse(3 not in self._set)
 
 
+class SizedTestCase(TestCase):
+
+    def test_empty_with_default(self) -> None:
+        fs: SortedFrozenSet = SortedFrozenSet()
+        self.assertEqual(len(fs), 0)
+
+    def test_empty(self) -> None:
+        fs: SortedFrozenSet = SortedFrozenSet(items=[])
+        self.assertEqual(len(fs), 0)
+
+    def test_one(self) -> None:
+        fs: SortedFrozenSet = SortedFrozenSet(items=[23])
+        self.assertEqual(len(fs), 1)
+
+    def test_multiple(self) -> None:
+        fs: SortedFrozenSet = SortedFrozenSet(items=range(10))
+        self.assertEqual(len(fs), 10)
+
+    def test_with_duplicates(self) -> None:
+        # This test validates a fundamental set behavior, that set is a
+        # collection of distinct items.
+        fs: SortedFrozenSet = SortedFrozenSet(items=[5, 4, 5, 5, 6])
+        self.assertEqual(len(fs), 3)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -115,6 +115,13 @@ the membership checking using `in`, and `not in` keywords. It relies on the
 implementation of the `__contains__` dunder method. When that implementation is 
 not found, it falls back to the Iterable protocol.
 
+### Sized
+
+Sized protocol enabled the use of `len` builtin function on a collection to 
+check the number of items, that it contains. It should not consume or modify 
+the collection in any ways. One must implement the `__len__` dunder method in 
+order to implement the Sized protocol.
+
 
 
 
