@@ -105,4 +105,16 @@ utilities, which these protocols support.
 In the [coll/collection](https://github.com/sarkarchandan/pycollections/blob/master/coll/collection.py) 
 module we have implemented a `SortedFrozenSet` type, which implements `Sized`, 
 `Iterable`, `Sequence`, `Container`, and `Set` protocols. We have implemented 
-the SortedFrozenSet with the Test Driven Development approach.
+the SortedFrozenSet with the Test Driven Development approach. Following are 
+brief illustrations about the protocols, that we are going to implement.
+
+### Container
+
+Container protocol is the most fundamental collection protocol, and supports 
+the membership checking using `in`, and `not in` keywords. It relies on the 
+implementation of the `__contains__` dunder method. When that implementation is 
+not found, it falls back to the Iterable protocol.
+
+
+
+
