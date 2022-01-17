@@ -1,7 +1,10 @@
 # pylint: disable=missing-module-docstring
 
+from __future__ import annotations
+
 from typing import Iterable, Tuple, Any, Iterator, Union, List
 from collections.abc import Sequence
+from itertools import chain
 
 
 class SortedFrozenSet(Sequence):
@@ -84,6 +87,30 @@ class SortedFrozenSet(Sequence):
         return hash(
             (type(self), self._items)
         )
+
+    def __add__(self, other: Any) -> SortedFrozenSet:
+        if not isinstance(other, type(self)):
+            # Our use of NotImplemented here has a similar reason as before.
+            # Since we are supposed to return a concrete SortedFrozenSet object
+            # from this method, when we are not doing it, Python treats the same
+            # as TypeError due to wrong type.
+            return NotImplemented
+        return SortedFrozenSet(
+            items=chain(self._items, other._items)
+        )
+
+    def __mul__(self, rhs: int) -> SortedFrozenSet:
+        # When the right-hand side operand is 0 or less, we can simply return
+        # self, because our object us immutable. If this was a mutable object
+        # instead, we would have returned a copy of the object after due
+        # operation.
+        return self if rhs > 0 else SortedFrozenSet()
+
+    def __rmul__(self, lhs: int) -> SortedFrozenSet:
+        # Since our object is immutable, in this case multiplication from
+        # left or right-hand side are same. Hence, we can simply delegate
+        # to the __mul__ method implementation.
+        return self * lhs
 
 
 if __name__ == '__main__':

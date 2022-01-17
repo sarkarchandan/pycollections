@@ -190,6 +190,49 @@ class SequenceTestCase(TestCase):
     def test_count_one(self) -> None:
         self.assertEqual(self._set.count(9), 1)
 
+    # Following test cases cover the addition of two SortedFrozenSets
+    # using the set union and set intersection methods.
+    def test_add_disjoint(self) -> None:
+        s1: SortedFrozenSet = SortedFrozenSet(items=[1, 2, 3])
+        s2: SortedFrozenSet = SortedFrozenSet(items=[5, 4, 6])
+        self.assertEqual(s1 + s2, SortedFrozenSet(items=[1, 2, 3, 4, 5, 6]))
+
+    def test_add_equal(self) -> None:
+        self.assertEqual(self._set + self._set, self._set)
+
+    def test_add_intersecting(self) -> None:
+        s1: SortedFrozenSet = SortedFrozenSet(items=[1, 2, 3])
+        s2: SortedFrozenSet = SortedFrozenSet(items=[3, 4, 6])
+        self.assertEqual(s1 + s2, SortedFrozenSet(items=[1, 2, 3, 4, 6]))
+
+    def test_add_type_error_left(self) -> None:
+        with self.assertRaises(TypeError):
+            _ = self._set + (3, 5, 8)
+
+    def test_add_type_error_right(self) -> None:
+        with self.assertRaises(TypeError):
+            _ = (3, 5, 8) + self._set # noqa
+
+    # Following testcases cover the scenario for repeating elements of the
+    # SortedFrozenSet.
+    def test_repetition_zero_right(self) -> None:
+        self.assertEqual(self._set * 0, SortedFrozenSet())
+
+    def test_repetition_negative_right(self) -> None:
+        self.assertEqual(self._set * -1, SortedFrozenSet())
+
+    def test_repetition_nonzero_right(self) -> None:
+        self.assertEqual(self._set * 100, self._set)
+
+    def test_repetition_zero_left(self) -> None:
+        self.assertEqual(0 * self._set, SortedFrozenSet())
+
+    def test_repetition_negative_left(self) -> None:
+        self.assertEqual(-1 * self._set, SortedFrozenSet())
+
+    def test_repetition_nonzero_left(self) -> None:
+        self.assertEqual(100 * self._set, self._set)
+
 
 class ReprTestCase(TestCase):
 

@@ -172,11 +172,42 @@ if the Sequence protocol.
   the said fallback takes place. Inside the `__getitem__` in this case we 
   delegate to the standard libreary implementation of `__reversed__` method 
   of the internal tuple object.
-* Locate an item by value, `index = seq.index(item)`.
+* Locate an item by value, `index = seq.index(item)`. We have provided this 
+  implementation in order to comply with the Sequence protocol, despite the 
+  set itself is an unordered collection.
 * Count the occurrences of a given item, `num = seq.count(item)`.
 
 In the implementation of the SortedFrozenSet, we have implemented all these 
-requirements to comply with the Sequence protocol.
+requirements to comply with the Sequence protocol. In order to provide the 
+implementation of the `index`, and `count` methods we have used the Python's 
+abstract base class implementation of these methods. For that we have made 
+our SortedFrozenSet class to inherit from the Sequence class of the 
+[collections.abc](https://docs.python.org/3/library/collections.abc.html) 
+module. However, we should mention, that these implementations are done for 
+the sake of completing the Sequence protocol. A pure set is an unordered 
+collection of distinct elements. Hence, it does not need any index or count 
+utilities.
+
+Apart from the utilities, which we have implemented here there are some 
+other optional extensions, which are widely implemented by other collections 
+which are part pf Python standard library. However, Sequence protocol does 
+not enforce them. Some of these utilities are listed below.
+
+* For both mutable, and immutable sequences,
+  * Concatenation by `__add__`, and `__radd__` methods.
+  * Repetition by `__mul__`, and `__rmul__` methods.
+* Only for mutable sequences,
+  * In-place concatenation by `__iadd__` method.
+  * In-place repetition by `__imul__` method.
+  * In-place append, extend, insert, pop, reverse, remove, sort.
+
+Our SortedFrozenSet is an immutable collection, hence we would only implement 
+the first group of the operations. Moreover, we need to understand, that adding 
+to a set is not always intuitive due the set-immutability. Actually, we are 
+going to implement the add as set union operation. The repetition would behave 
+identical to the operation of `*` operator for the list. However, there is one 
+key difference to keep in mind. Since our object is a set, we can not really 
+repeat any elements apart from 0 or negative times. Our testcases cover this.
 
 ### Hashable
 
