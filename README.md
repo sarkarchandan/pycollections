@@ -152,7 +152,19 @@ if the Sequence protocol.
   index is beyond permissible range, the method must raise the IndexError.
   In our implementation, the method should also support the negative indexing 
   allowed by Python.
-* Optionally retrieve items by slicing, `items = seqp[start:stop]`.
+* Optionally retrieve items by slicing, `items = seqp[start:stop]`. In our 
+  implementation this requirement alone has made us to tweak the simpler 
+  `__getitem__` implementation to handle inter index and slice index 
+  differently. Also, the testcases written for this part made us to consider, 
+  how Python interprets the equality of two different objects.
+  
+  > The default interpretation of equality in Python is inherited from the 
+  > `object` class. That means, by default Python checks for the reference 
+  > equality, and not the value equality. That means, when we compare, 
+  > `object1 == object2`, Python actually compares is, `object1 is object2`. 
+  
+  In order to get an equivalence behavior i.e., the value equality, we need 
+  to override the default equality behavior.
 * Produce a reverse Iterator, `rev = reversed(seq)`.
 * Locate an item by value, `index = seq.index(item)`.
 * Count the occurrences of a given item, `num = seq.count(item)`.

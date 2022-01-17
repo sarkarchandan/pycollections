@@ -132,6 +132,77 @@ class SequenceTestCase(TestCase):
         with self.assertRaises(IndexError):
             _ = self._set[-6]
 
+    # Following set of tests concerning slicing leads to a design decision, that
+    # upon slicing from a SortedFrozenSet object, what we expect, is again a
+    # SortedFrozenSet, and not any other structure. This is one of the benefits
+    # of the TDD approach. We can be concrete, and consistent about, how we
+    # want our implementation to behave. This mitigates the possibility of the
+    # undesired surprises later.
+    def test_slice_from_start(self) -> None:
+        self.assertEqual(self._set[:3], SortedFrozenSet(items=[1, 4, 9]))
+
+    def test_slice_to_end(self) -> None:
+        self.assertEqual(self._set[3:], SortedFrozenSet(items=[13, 15]))
+
+    def test_slice_empty(self) -> None:
+        self.assertEqual(self._set[10:], SortedFrozenSet())
+
+    def test_slice_arbitrary(self) -> None:
+        self.assertEqual(self._set[2:4], SortedFrozenSet(items=[9, 13]))
+
+    def test_slice_step(self) -> None:
+        self.assertEqual(self._set[0:5:2], SortedFrozenSet(items=[1, 9, 15]))
+
+    def test_slice_full(self) -> None:
+        self.assertEqual(self._set[:], self._set)
+
+
+class ReprTestCase(TestCase):
+
+    def test_repr_empty(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet()
+        self.assertEqual(repr(s), 'SortedFrozenSet(items=)')
+
+    def test_repr_one(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items=[45, 76, 23])
+        self.assertEqual(repr(s), 'SortedFrozenSet(items=[23, 45, 76])')
+
+
+class EqualityTestCase(TestCase):
+
+    def test_positive_equal(self) -> None:
+        self.assertTrue(SortedFrozenSet(items=[4, 5, 6]) ==
+                        SortedFrozenSet(items=[6, 5, 4]))
+
+    def test_negative_equal(self) -> None:
+        self.assertFalse(SortedFrozenSet(items=[4, 5, 6]) ==
+                         SortedFrozenSet(items=[1, 2, 4]))
+
+    def test_type_mismatch(self) -> None:
+        self.assertFalse(SortedFrozenSet(items=[4, 5, 6]) == [4, 5, 6])
+
+    def test_identical(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items=[10, 11, 12])
+        self.assertTrue(s == s)
+
+
+class InequalityTestCase(TestCase):
+
+    def test_positive_unequal(self) -> None:
+        self.assertTrue(SortedFrozenSet(items=[4, 5, 6]) !=
+                        SortedFrozenSet(items=[1, 2, 4]))
+
+    def test_negative_unequal(self) -> None:
+        self.assertFalse(SortedFrozenSet(items=[4, 5, 6]) !=
+                         SortedFrozenSet(items=[6, 5, 4]))
+
+    def test_type_mismatch(self) -> None:
+        self.assertTrue(SortedFrozenSet(items=[1, 2, 3]) != [1, 2, 3])
+
+    def test_identical(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items=[10, 11, 12])
+        self.assertFalse(s != s)
+
 
 if __name__ == '__main__':
     unittest.main()

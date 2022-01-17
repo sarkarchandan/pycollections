@@ -1,6 +1,6 @@
 # pylint: disable=missing-module-docstring
 
-from typing import Iterable, List, Any, Iterator
+from typing import Iterable, List, Any, Iterator, Union
 
 
 class SortedFrozenSet:
@@ -32,8 +32,37 @@ class SortedFrozenSet:
         # for item in self._items:
         #     yield item
 
-    def __getitem__(self, index: int) -> Any:
-        return self._items[index]
+    def __getitem__(self, index: Union[int, slice]) -> Any:
+        # Since we want to support both indexing and slicing on the
+        # SortedFrozenSet object, the passed in index could be either an
+        # integer or a slice object. When index is an integer, we can
+        # simply return the element. However, when index is a slice object
+        # we want to return a SortedFrozenSet object. Hence, we need to be
+        # careful about, how we treat the provided index object.
+        res = self._items[index]
+        return (
+            SortedFrozenSet(items=res)
+            if isinstance(index, slice)
+            else res
+        )
+
+    def __repr__(self) -> str:
+        return '{type}(items={args})'.format(type=self.__class__.__name__,
+                                             args=(
+                                                 repr(self._items)
+                                                 if self._items else ''
+                                             ))
+
+    def __eq__(self, other: Any) -> bool:
+        # This type checking is introduced in order to reason with the test
+        # EqualityTest().test_type_mismatch. In this test we want to compare
+        # a SortedFrozenSet object against a completely different object, and
+        # therefore, we need a completely different equality implementation.
+        # Hence, we return the NotImplemented object instead of raising the
+        # same.
+        if not isinstance(other, type(self)):
+            return NotImplemented
+        return self._items == other._items # noqa
 
 
 if __name__ == '__main__':
