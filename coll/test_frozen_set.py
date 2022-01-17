@@ -105,5 +105,33 @@ class IterableTestCase(TestCase):
             idx += 1
 
 
+class SequenceTestCase(TestCase):
+
+    _set: SortedFrozenSet
+
+    def setUp(self) -> None:
+        self._set = SortedFrozenSet(items=[1, 4, 9, 13, 15])
+
+    def test_index_zero(self) -> None:
+        self.assertEqual(self._set[0], 1)
+
+    def test_index_four(self) -> None:
+        self.assertEqual(self._set[4], 15)
+
+    def test_index_one_beyond_the_end(self) -> None:
+        with self.assertRaises(IndexError):
+            _ = self._set[5]
+
+    def test_index_minus_one(self) -> None:
+        self.assertEqual(self._set[-1], 15)
+
+    def test_index_minus_five(self) -> None:
+        self.assertEqual(self._set[-5], 1)
+
+    def test_index_one_before_the_start(self) -> None:
+        with self.assertRaises(IndexError):
+            _ = self._set[-6]
+
+
 if __name__ == '__main__':
     unittest.main()

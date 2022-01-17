@@ -99,8 +99,8 @@ utilities, which these protocols support.
 * `Set` protocol allows algebraic set operations.
 * `Mapping` protocol associates values with hashable keys. It is represented in 
   Python by the dict data structure.
-* `Mutable Sequence, Set, and Mapping` protocols are representatives of the 
-  mutable versions of the corresponding protocols.
+* `Mutable Sequence`, `Mutable Set`, and `Mutable Mapping` protocols are 
+  representatives of the mutable versions of the corresponding protocols.
 
 In the [frozen_set](https://github.com/sarkarchandan/pycollections/blob/master/coll/frozen_set.py) 
 module we have implemented a `SortedFrozenSet` type, which implements `Sized`, 
@@ -138,7 +138,25 @@ approach, where we called the iter function on the internal collection. However,
 we also acknowledge, that using `__iter__` as a Generator function is also 
 equally valid. Generator functions also produce Iterator objects.
 
+### Sequence
 
+Sequence protocol covers a larger ground, compared to all other protocols, which 
+we have implemented so far. Moreover, Sequence protocol implies the Container, 
+Sized, and Iterable protocols. Following are the very least of the requirements 
+if the Sequence protocol.
 
+* Subscripting - retrieve an item from the collection by index, 
+  `item = seq[index]`. This way of accessing an item from the collection 
+  delegates to the `__getitem__` dunder method. This method takes and integer 
+  index as argument, and it is supposed to return the item at the index. If the 
+  index is beyond permissible range, the method must raise the IndexError.
+  In our implementation, the method should also support the negative indexing 
+  allowed by Python.
+* Optionally retrieve items by slicing, `items = seqp[start:stop]`.
+* Produce a reverse Iterator, `rev = reversed(seq)`.
+* Locate an item by value, `index = seq.index(item)`.
+* Count the occurrences of a given item, `num = seq.count(item)`.
 
+In the implementation of the SortedFrozenSet, we have implemented all these 
+requirements to comply with the Sequence protocol.
 

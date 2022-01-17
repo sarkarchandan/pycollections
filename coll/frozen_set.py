@@ -32,6 +32,9 @@ class SortedFrozenSet:
         # for item in self._items:
         #     yield item
 
+    def __getitem__(self, index: int) -> Any:
+        return self._items[index]
+
 
 if __name__ == '__main__':
     pass
