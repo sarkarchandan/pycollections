@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 from typing import Iterable, Tuple, Any, Iterator, Union, List
-from collections.abc import Sequence
+from collections.abc import Sequence, Set
 from itertools import chain
 from bisect import bisect_left
 
 
-class SortedFrozenSet(Sequence):
+class SortedFrozenSet(Sequence, Set):
 
     _items: Tuple[Any]
 
@@ -137,6 +137,24 @@ class SortedFrozenSet(Sequence):
         if index != len(self._items) and self._items[index] == item:
             return index
         raise ValueError(f'{item!r} not found')
+
+    def issubset(self, other: Iterable) -> bool:
+        return self <= SortedFrozenSet(items=other)
+
+    def issuperset(self, other: Iterable) -> bool:
+        return self >= SortedFrozenSet(items=other)
+
+    def intersection(self, other: Iterable) -> SortedFrozenSet:
+        return SortedFrozenSet(items=self & SortedFrozenSet(items=other))
+
+    def union(self, other: Iterable) -> SortedFrozenSet:
+        return SortedFrozenSet(items=self | SortedFrozenSet(items=other))
+
+    def symmetric_difference(self, other: Iterable) -> SortedFrozenSet:
+        return SortedFrozenSet(items=self ^ SortedFrozenSet(items=other))
+
+    def difference(self, other: Iterable) -> SortedFrozenSet:
+        return SortedFrozenSet(items=self - SortedFrozenSet(items=other))
 
 
 if __name__ == '__main__':

@@ -6,6 +6,7 @@ from unittest import TestCase
 from typing import List, Iterator, Container, Sized, Sequence, Hashable
 from typing import Iterable
 from frozen_set import SortedFrozenSet
+from collections.abc import Set
 
 
 class ConstructionTestCase(TestCase):
@@ -302,6 +303,155 @@ class HashableTestCase(TestCase):
 
     def test_protocol(self) -> None:
         self.assertTrue(issubclass(SortedFrozenSet, Hashable))
+
+
+class RelationalSetProtocolTestCase(TestCase):
+
+    def test_lt_positive(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2})
+        t: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        self.assertTrue(s < t)
+
+    def test_lt_negative(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        self.assertFalse(s < t)
+
+    def test_le_lt_positive(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2})
+        t: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        self.assertTrue(s <= t)
+
+    def test_le_eq_positive(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        self.assertTrue(s <= t)
+
+    def test_le_negative(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: SortedFrozenSet = SortedFrozenSet(items={1, 2})
+        self.assertFalse(s <= t)
+
+    def test_gt_positive(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: SortedFrozenSet = SortedFrozenSet(items={1, 2})
+        self.assertTrue(s > t)
+
+    def test_gt_negative(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2})
+        t: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        self.assertFalse(s > t)
+
+    def test_ge_gt_positive(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: SortedFrozenSet = SortedFrozenSet(items={1, 2})
+        self.assertTrue(s >= t)
+
+    def test_ge_eq_positive(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        self.assertTrue(s >= t)
+
+    def test_ge_negative(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2})
+        t: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        self.assertFalse(s >= t)
+
+
+class SetRelationalMethodsTestCase(TestCase):
+
+    def test_issubset_proper_positive(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2})
+        t: List[int] = [1, 2, 3]
+        self.assertTrue(s.issubset(t))
+
+    def test_issubset_positive(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: List[int] = [1, 2, 3]
+        self.assertTrue(s.issubset(t))
+
+    def test_issubset_negative(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: List[int] = [1, 2]
+        self.assertFalse(s.issubset(t))
+
+    def test_issuperset_proper_positive(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: List[int] = [1, 2]
+        self.assertTrue(s.issuperset(t))
+
+    def test_issuperset_positive(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: List[int] = [1, 2, 3]
+        self.assertTrue(s.issuperset(t))
+
+    def test_issuperset_negative(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2})
+        t: List[int] = [1, 2, 3]
+        self.assertFalse(s.issuperset(t))
+
+    def test_isdisjoint_positive(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: List[int] = [4, 5, 6]
+        self.assertTrue(s.isdisjoint(t))
+
+    def test_isdisjoint_negative(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: List[int] = [3, 4, 5]
+        self.assertFalse(s.isdisjoint(t))
+
+
+class SetAlgebraMethodsInfixNotationTestCase(TestCase):
+
+    def test_intersection(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: SortedFrozenSet = SortedFrozenSet(items={2, 3, 4})
+        self.assertEqual(s & t, SortedFrozenSet(items={2, 3}))
+
+    def test_union(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: SortedFrozenSet = SortedFrozenSet(items={2, 3, 4})
+        self.assertEqual(s | t, SortedFrozenSet(items={1, 2, 3, 4}))
+
+    def test_symmetric_difference(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: SortedFrozenSet = SortedFrozenSet(items={2, 3, 4})
+        self.assertEqual(s ^ t, SortedFrozenSet(items={1, 4}))
+
+    def test_difference(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: SortedFrozenSet = SortedFrozenSet(items={2, 3, 4})
+        self.assertEqual(s - t, SortedFrozenSet(items={1}))
+
+
+class SetAlgebraNamedMethodsTestCase(TestCase):
+
+    def test_intersection(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: List[int] = [2, 3, 4]
+        self.assertEqual(s.intersection(t), SortedFrozenSet(items={2, 3}))
+
+    def test_union(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: List[int] = [2, 3, 4]
+        self.assertEqual(s.union(t), SortedFrozenSet(items={1, 2, 3, 4}))
+
+    def test_symmetric_difference(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: List[int] = [2, 3, 4]
+        self.assertEqual(s.symmetric_difference(t),
+                         SortedFrozenSet(items={1, 4}))
+
+    def test_difference(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items={1, 2, 3})
+        t: List[int] = [2, 3, 4]
+        self.assertEqual(s.difference(t), SortedFrozenSet(items={1}))
+
+
+class SetProtocolTestCase(TestCase):
+
+    def test_protocol(self) -> None:
+        self.assertTrue(issubclass(SortedFrozenSet, Set))
 
 
 if __name__ == '__main__':

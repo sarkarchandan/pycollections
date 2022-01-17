@@ -223,7 +223,54 @@ supporting method `__hash__` as None. Since SortedFrozenSet supports the
 Equality, the rule is equal objects should have same hashcode, whereas unequal 
 objects may return different hashcode.
 
-### Refactoring Notes
+### Set
+
+<img src="static/set_abc.png" width="1000px" alt="Set Protocol from ABC">
+
+The Set protocol from the abstract base class (ABC) inherits from the Collection 
+protocol, which in turn implies Sized, Iterable, and Container protocols. We 
+have already satisfied the requirements from these protocols. Furthermore, the 
+Set protocol from the abstract base class introduces the set operations as 
+mixin methods. These operations can be classified into two groups, namely 
+relational operations, and set algebra operations.
+
+<img src="static/set_abc_relational_operators.png" width="1000px" alt="Relational operator of Set protocol">
+
+Here in the above image we are seeing the relational operations. We are seeing 
+here at a glance, the mapping behind the infix symbols, and their corresponding 
+dunder methods, which we need to implement to have those behaviors. There are 
+some named methods, which the builtin `set` types provides. However, if we want 
+them then we need to implement them ourselves. There is one difference between 
+the infix operator implementation powered by the dunder methods, and the name 
+methods. The infix operators need the operands to be of the same type, whereas 
+the named methods can take any Iterable as arguments.
+
+<img src="static/set_algebra_operators.png" width="1000px" alt="Algebra operator of Set protocol">
+
+Apart from the relational operators builtin `set` type also provides some 
+methods for the set algebra operations, as we see above. As before, if we use 
+the infix notation operators, both the operands need to be of the same type. 
+If we instead go for the named methods, they accept any Iterable types as 
+arguments. Our SortedFrozenSet provides implementation of all the relational, 
+and algebraic operations of the Set protocol, and hence conforms to it. 
+
+In this implementation, we inherited from the Set base class of the collection.abc 
+module. In case we need to implement a sorted mutable set, we need to inherit 
+from the MutableSet base class, and provide implementation of the two abstract 
+methods, namely `add`, and `discard` at the very least. Since in this case we 
+are working with a mutable collection, we should also provide implementation 
+of a `copy` method.
+
+In this development of the SortdFrozenSet we have conformed to the following 
+collection protocols,
+
+* `Container` protocol for testing set membership.
+* `Sized` protocol for determining the length.
+* `Iterable` & `Iterator` for traversing through the collection.
+* `Sequence` protocol for random access by index.
+* `Set` protocol for implementing collection of distinct elements.
+
+## Refactoring Notes
 
 > In the previous implementation the index and count methods come from the 
 > collection.abc.Sequence base class. The issue is, these implementations do 
