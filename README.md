@@ -186,7 +186,11 @@ our SortedFrozenSet class to inherit from the Sequence class of the
 module. However, we should mention, that these implementations are done for 
 the sake of completing the Sequence protocol. A pure set is an unordered 
 collection of distinct elements. Hence, it does not need any index or count 
-utilities.
+utilities. These implementations for index ad count methods are not optimal 
+though. Because of the fact, that the SortedFrozenSet is an ordered collection 
+of the distinct elements we have scope of exploiting these properties and 
+optimize the performance of index and count methods. We have discussed these 
+in the **Refactoring Notes** section.
 
 Apart from the utilities, which we have implemented here there are some 
 other optional extensions, which are widely implemented by other collections 
@@ -219,3 +223,19 @@ supporting method `__hash__` as None. Since SortedFrozenSet supports the
 Equality, the rule is equal objects should have same hashcode, whereas unequal 
 objects may return different hashcode.
 
+### Refactoring Notes
+
+> In the previous implementation the index and count methods come from the 
+> collection.abc.Sequence base class. The issue is, these implementations do 
+> not take advantage of the fact, that SortedFrozenSet is an ordered collection 
+> of distinct elements. Hence, these implementations perform a linear search 
+> in over the underlying collection. We could instead override these methods 
+> in the SortedFrozenSet class, and use binary search instead. That would 
+> give us the runtime complexity of O(log n) instead of O(n). In order to 
+> incorporate the binary search we'd make use of the `bisect` module from the 
+> standard library.
+
+> The same argument as above is also applicable in the same way for the dunder 
+> method `__contans__`, which checks set-membership for us. This implementation 
+> currently also relies on the linear search. We can improve this implementation 
+> using the bisect module in the same way as above.

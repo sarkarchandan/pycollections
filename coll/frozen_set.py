@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Iterable, Tuple, Any, Iterator, Union, List
 from collections.abc import Sequence
 from itertools import chain
+from bisect import bisect_left
 
 
 class SortedFrozenSet(Sequence):
@@ -23,7 +24,16 @@ class SortedFrozenSet(Sequence):
         self._items = tuple(srt)
 
     def __contains__(self, item: Any) -> bool:
-        return item in self._items
+        # We first search, which is the right index for inserting the item
+        # so that the sorted order of the collection is preserved.
+        index: int = bisect_left(self._items, item)
+        # If the index is equal to the length of the self._items, that would
+        # mean, the item is non-existing, and needs to be inserted at the very
+        # end in order to insert the sorted order. And we also check if the
+        # item at the current index is the one, we are concerned with. This
+        # works because the underlying collection is a collection of distinct
+        # elements.
+        return index != len(self._items) and self._items[index] == item
 
     def __len__(self) -> int:
         return len(self._items)
@@ -111,6 +121,22 @@ class SortedFrozenSet(Sequence):
         # left or right-hand side are same. Hence, we can simply delegate
         # to the __mul__ method implementation.
         return self * lhs
+
+    def count(self, item: Any) -> int:
+        # Overrides the base implementation of the count methods from the
+        # Sequence base class. We delegate to the __contains__ method
+        # implementation, which make use of the binary search utility of the
+        # bisect module, and achieve O(log n) runtime complexity with the
+        # searching an item in our ordered collection of distinct elements.
+        return int(item in self)
+
+    def index(self, item: Any, start: int = ..., stop: int = ...) -> int:
+        # Overrides the base implementation of the index methods using the
+        # binary search.
+        index: int = bisect_left(self._items, item)
+        if index != len(self._items) and self._items[index] == item:
+            return index
+        raise ValueError(f'{item!r} not found')
 
 
 if __name__ == '__main__':
