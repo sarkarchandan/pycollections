@@ -1,9 +1,10 @@
 # pylint: disable=missing-module-docstring
 
 from typing import Iterable, Tuple, Any, Iterator, Union, List
+from collections.abc import Sequence
 
 
-class SortedFrozenSet:
+class SortedFrozenSet(Sequence):
 
     _items: Tuple[Any]
 

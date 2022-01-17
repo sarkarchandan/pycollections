@@ -112,6 +112,8 @@ class SequenceTestCase(TestCase):
     def setUp(self) -> None:
         self._set = SortedFrozenSet(items=[1, 4, 9, 13, 15])
 
+    # Following testcases would cover the use of single integer indexing
+    # with the SortedFrozenSet.
     def test_index_zero(self) -> None:
         self.assertEqual(self._set[0], 1)
 
@@ -167,6 +169,26 @@ class SequenceTestCase(TestCase):
         self.assertEqual(next(rev), 1)
         with self.assertRaises(StopIteration):
             _ = next(rev)
+
+    # Following testcases would cover the possibility of finding the index
+    # of a given item in the SortedFrozenSet.
+    def test_index_positive(self) -> None:
+        self.assertEqual(self._set.index(9), 2)
+
+    def test_index_negative(self) -> None:
+        with self.assertRaises(ValueError):
+            _ = self._set.index(17)
+
+    # Following testcases would cover the possibility of having a count of
+    # specific elements in the SortedFrozenSet. However, this is utility is
+    # implemented purely for the sake of completing the Sequence protocol,
+    # because we know, that a set is collection of distinct elements. Hence,
+    # an item would either exist in a set or won't exist at all.
+    def test_count_zero(self) -> None:
+        self.assertEqual(self._set.count(34), 0)
+
+    def test_count_one(self) -> None:
+        self.assertEqual(self._set.count(9), 1)
 
 
 class ReprTestCase(TestCase):
