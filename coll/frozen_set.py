@@ -1,14 +1,14 @@
 # pylint: disable=missing-module-docstring
 
-from typing import Iterable, List, Any, Iterator, Union
+from typing import Iterable, Tuple, Any, Iterator, Union, List
 
 
 class SortedFrozenSet:
 
-    _items: List[Any]
+    _items: Tuple[Any]
 
     def __init__(self, items: Iterable = None) -> None:
-        self._items = sorted(
+        srt: List[Any] = sorted(
             # Using set as an intermediate collection serves an important
             # purpose. Set is a collection of distinct elements or null.
             # Using set gets rid of any duplicate items, that the provided
@@ -16,6 +16,7 @@ class SortedFrozenSet:
             set(items) if (items is not None)
             else set()
         )
+        self._items = tuple(srt)
 
     def __contains__(self, item: Any) -> bool:
         return item in self._items
@@ -47,9 +48,18 @@ class SortedFrozenSet:
         )
 
     def __repr__(self) -> str:
+        # Since we have refactored our internal collection self._items to a
+        # tuple in order to support the Hashable protocol, we need to make
+        # some adjustments here in order to generate the string representation
+        # of the object construction. The SortedFrozenSet object is possible
+        # to construct with any Iterable such as a list. Our testcases cover
+        # that.
         return '{type}(items={args})'.format(type=self.__class__.__name__,
                                              args=(
-                                                 repr(self._items)
+                                                 '[{}]'.format(
+                                                     ', '.join(map(repr,
+                                                                   self._items))
+                                                 )
                                                  if self._items else ''
                                              ))
 
@@ -63,6 +73,16 @@ class SortedFrozenSet:
         if not isinstance(other, type(self)):
             return NotImplemented
         return self._items == other._items # noqa
+
+    def __hash__(self) -> int:
+        # One easy way to create a hashcode out of multiple hashable objects
+        # is to put them inside a tuple, and call the hash function on the
+        # tuple. However, in this case we would also change the type of the
+        # internal self._items to a tuple instead, because list objects is
+        # mutable in Python, and should not have a hash value.
+        return hash(
+            (type(self), self._items)
+        )
 
 
 if __name__ == '__main__':

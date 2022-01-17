@@ -165,10 +165,26 @@ if the Sequence protocol.
   
   In order to get an equivalence behavior i.e., the value equality, we need 
   to override the default equality behavior.
-* Produce a reverse Iterator, `rev = reversed(seq)`.
+* Produce a reverse Iterator, `rev = reversed(seq)`. This utility is supported 
+  by the implementation of the `__reversed__` method. In absence of this 
+  implementation a fallback happens to the`__getitem__` method, which makes 
+  attempt to yield and Iterator using reverse indexing. In our implementation 
+  the said fallback takes place. Inside the `__getitem__` in this case we 
+  delegate to the standard libreary implementation of `__reversed__` method 
+  of the internal tuple object.
 * Locate an item by value, `index = seq.index(item)`.
 * Count the occurrences of a given item, `num = seq.count(item)`.
 
 In the implementation of the SortedFrozenSet, we have implemented all these 
 requirements to comply with the Sequence protocol.
+
+### Hashable
+
+Hashable objects can be used as keys for the dictionary mapping. **Immutable 
+objects, which support value equality should also comply with Hashable 
+protocol**. By that convention our SortedFrozenSet should do that. In contrast 
+to that mutable objects, should disable the Hashable protocol by marking the 
+supporting method `__hash__` as None. Since SortedFrozenSet supports the 
+Equality, the rule is equal objects should have same hashcode, whereas unequal 
+objects may return different hashcode.
 

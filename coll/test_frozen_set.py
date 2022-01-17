@@ -156,6 +156,18 @@ class SequenceTestCase(TestCase):
     def test_slice_full(self) -> None:
         self.assertEqual(self._set[:], self._set)
 
+    # Following test case validates the support for reversed Iterator for the
+    # SortedFrozenSet type.
+    def test_reversed(self) -> None:
+        s: SortedFrozenSet = SortedFrozenSet(items=[1, 3, 5, 7])
+        rev: Iterator = reversed(s)
+        self.assertEqual(next(rev), 7)
+        self.assertEqual(next(rev), 5)
+        self.assertEqual(next(rev), 3)
+        self.assertEqual(next(rev), 1)
+        with self.assertRaises(StopIteration):
+            _ = next(rev)
+
 
 class ReprTestCase(TestCase):
 
@@ -202,6 +214,13 @@ class InequalityTestCase(TestCase):
     def test_identical(self) -> None:
         s: SortedFrozenSet = SortedFrozenSet(items=[10, 11, 12])
         self.assertFalse(s != s)
+
+
+class HashableTestCase(TestCase):
+
+    def test_equal_sets_have_same_hashcode(self) -> None:
+        self.assertEqual(hash(SortedFrozenSet(items=[5, 2, 1, 4])),
+                         hash(SortedFrozenSet(items=[4, 1, 5, 2])))
 
 
 if __name__ == '__main__':
