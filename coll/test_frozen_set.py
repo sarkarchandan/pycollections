@@ -3,7 +3,8 @@
 
 import unittest
 from unittest import TestCase
-from typing import List, Iterator
+from typing import List, Iterator, Container, Sized, Sequence, Hashable
+from typing import Iterable
 from frozen_set import SortedFrozenSet
 
 
@@ -55,6 +56,9 @@ class ContainerTestCase(TestCase):
     def test_negative_not_contained(self) -> None:
         self.assertFalse(3 not in self._set)
 
+    def test_protocol(self) -> None:
+        self.assertTrue(issubclass(SortedFrozenSet, Container))
+
 
 class SizedTestCase(TestCase):
 
@@ -80,6 +84,9 @@ class SizedTestCase(TestCase):
         fs: SortedFrozenSet = SortedFrozenSet(items=[5, 4, 5, 5, 6])
         self.assertEqual(len(fs), 3)
 
+    def test_protocol(self) -> None:
+        self.assertTrue(issubclass(SortedFrozenSet, Sized))
+
 
 class IterableTestCase(TestCase):
 
@@ -103,6 +110,9 @@ class IterableTestCase(TestCase):
         for item in self._set:
             self.assertEqual(item, exp[idx])
             idx += 1
+
+    def test_protocol(self) -> None:
+        self.assertTrue(issubclass(SortedFrozenSet, Iterable))
 
 
 class SequenceTestCase(TestCase):
@@ -233,6 +243,9 @@ class SequenceTestCase(TestCase):
     def test_repetition_nonzero_left(self) -> None:
         self.assertEqual(100 * self._set, self._set)
 
+    def test_protocol(self) -> None:
+        self.assertTrue(issubclass(SortedFrozenSet, Sequence))
+
 
 class ReprTestCase(TestCase):
 
@@ -286,6 +299,9 @@ class HashableTestCase(TestCase):
     def test_equal_sets_have_same_hashcode(self) -> None:
         self.assertEqual(hash(SortedFrozenSet(items=[5, 2, 1, 4])),
                          hash(SortedFrozenSet(items=[4, 1, 5, 2])))
+
+    def test_protocol(self) -> None:
+        self.assertTrue(issubclass(SortedFrozenSet, Hashable))
 
 
 if __name__ == '__main__':
